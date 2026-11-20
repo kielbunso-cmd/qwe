@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#24164a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="TaskWise">
+  <meta name="description" content="A calm, personal space to plan and track your tasks.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon.svg">
+  <link rel="stylesheet" href="./styles.css">
+  <title>TaskWise</title>
+</head>
+<body>
+  <div id="auth-view" class="auth-shell">
+    <section class="auth-card" aria-labelledby="auth-title">
+      <a class="brand auth-brand" href="./" aria-label="TaskWise home">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <span>TaskWise</span>
+      </a>
+      <p class="eyebrow">YOUR PERSONAL WORKSPACE</p>
+      <h1 id="auth-title">Welcome back</h1>
+      <p id="auth-description" class="muted">Sign in to pick up where you left off.</p>
+
+      <form id="login-form" class="auth-form">
+        <label for="login-username">Username</label>
+        <input id="login-username" name="username" autocomplete="username" required>
+        <label for="login-password">Password</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        <p id="login-error" class="form-error" role="alert"></p>
+        <button class="button button-primary button-wide" type="submit">Sign in</button>
+      </form>
+
+      <form id="register-form" class="auth-form" hidden>
+        <label for="register-name">Full name <span class="optional">(optional)</span></label>
+        <input id="register-name" name="name" autocomplete="name" maxlength="80">
+        <label for="register-username">Username</label>
+        <input id="register-username" name="username" autocomplete="username" maxlength="40" required>
+        <label for="register-password">Password</label>
+        <input id="register-password" name="password" type="password" autocomplete="new-password" minlength="4" required>
+        <p class="field-hint">Use at least 4 characters with uppercase, lowercase, a number, and a symbol.</p>
+        <label for="register-confirm">Confirm password</label>
+        <input id="register-confirm" name="confirm" type="password" autocomplete="new-password" required>
+        <p id="register-error" class="form-error" role="alert"></p>
+        <button class="button button-primary button-wide" type="submit">Create account</button>
+      </form>
+
+      <p class="auth-switch">
+        <span id="auth-switch-prompt">New to TaskWise?</span>
+        <button id="auth-switch" class="text-button" type="button">Create an account</button>
+      </p>
+      <p class="local-note"><span aria-hidden="true">🔒</span> Your account and tasks stay in this browser on this device.</p>
+    </section>
+  </div>
+
+  <div id="app" class="app-shell" hidden>
+    <aside class="sidebar">
+      <a class="brand" href="#" data-view="dashboard" aria-label="TaskWise dashboard">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <span>TaskWise</span>
+      </a>
+      <p class="nav-caption">WORKSPACE</p>
+      <nav class="primary-nav" aria-label="Main navigation">
+        <button class="nav-link" data-view="dashboard"><span aria-hidden="true">⌂</span> Overview</button>
+        <button class="nav-link" data-view="tasks"><span aria-hidden="true">✓</span> My tasks</button>
+        <button class="nav-link" data-view="calendar"><span aria-hidden="true">▦</span> Calendar</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-profile">
+          <span class="avatar" id="sidebar-avatar">T</span>
+          <span class="profile-copy"><strong id="sidebar-name"></strong><small id="sidebar-username"></small></span>
+        </div>
+        <button class="nav-link" data-view="settings"><span aria-hidden="true">⚙</span> Settings</button>
+        <button class="nav-link logout-link" data-action="logout"><span aria-hidden="true">↪</span> Sign out</button>
+      </div>
+    </aside>
+
+    <div class="main-column">
+      <header class="topbar">
+        <div class="mobile-brand">
+          <span class="brand-mark" aria-hidden="true">T</span><strong>TaskWise</strong>
+        </div>
+        <p class="topbar-date" id="topbar-date"></p>
+        <button class="topbar-profile" data-view="settings" aria-label="Open account settings">
+          <span class="avatar" id="topbar-avatar">T</span>
+        </button>
+      </header>
+      <main id="view-root" class="view-root" tabindex="-1"></main>
+      <nav class="mobile-nav" aria-label="Main navigation">
+        <button class="nav-link" data-view="dashboard"><span aria-hidden="true">⌂</span><small>Home</small></button>
+        <button class="nav-link" data-view="tasks"><span aria-hidden="true">✓</span><small>Tasks</small></button>
+        <button class="nav-link" data-view="calendar"><span aria-hidden="true">▦</span><small>Calendar</small></button>
+        <button class="nav-link" data-view="settings"><span aria-hidden="true">⚙</span><small>Settings</small></button>
+      </nav>
+    </div>
+  </div>
+
+  <dialog id="task-dialog" class="task-dialog">
+    <form id="task-form" method="dialog">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">TASK DETAILS</p><h2 id="task-dialog-title">New task</h2></div>
+        <button class="icon-button" type="button" data-action="close-dialog" aria-label="Close">×</button>
+      </div>
+      <input id="task-id" name="id" type="hidden">
+      <label for="task-name">Task name</label>
+      <input id="task-name" name="name" maxlength="120" required>
+      <label for="task-description">Description <span class="optional">(optional)</span></label>
+      <textarea id="task-description" name="description" rows="3" maxlength="1000"></textarea>
+      <div class="form-row">
+        <div><label for="task-priority">Priority</label>
+          <select id="task-priority" name="priority"><option>Low</option><option selected>Medium</option><option>High</option></select>
+        </div>
+        <div><label for="task-status">Status</label>
+          <select id="task-status" name="status"><option>Pending</option><option>In Progress</option><option>Completed</option></select>
+        </div>
+      </div>
+      <label for="task-deadline">Deadline <span class="optional">(optional)</span></label>
+      <input id="task-deadline" name="deadline" type="datetime-local">
+      <p id="task-error" class="form-error" role="alert"></p>
+      <div class="dialog-actions">
+        <button class="button button-quiet" type="button" data-action="close-dialog">Cancel</button>
+        <button class="button button-primary" type="submit">Save task</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js" defer></script>
+</body>
+</html>

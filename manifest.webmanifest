@@ -1,0 +1,18 @@
+{
+  "name": "TaskWise - Smart Task Management",
+  "short_name": "TaskWise",
+  "description": "A calm, personal space to plan and track your tasks.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f5fc",
+  "theme_color": "#24164a",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
